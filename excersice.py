@@ -35,6 +35,14 @@ t_END = r'end'
 t_ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
 
 def t_NUM(t):
+    #if (t[0] == '('):
+    #    r'\(*\d+\)*'
+    #    try:
+    #        t.value = int(t[1:-1])
+    #    except ValueError:
+    #        print("Integer value too large %d", t.value)
+    #        t.value = 0
+    #    return t
     r'\d+'
     try:
         t.value = int(t.value)
@@ -62,7 +70,8 @@ def p_stmt(t):
             | IF LPAREN e RPAREN stmt ELSE stmt FI
             | IF LPAREN e RPAREN stmt FI
             | WHILE LPAREN e RPAREN DO stmt OD
-            | BEGIN stmts END'''
+            | BEGIN stmts END
+            '''
 
 def p_stmts(t):
     '''stmts : stmts SEMI stmt
@@ -71,6 +80,8 @@ def p_stmts(t):
 def p_e(t):
     '''e : e PLUS t
          | e MINUS t
+         | MINUS t
+         | LPAREN e RPAREN
          | t'''
 
 def p_t(t):
