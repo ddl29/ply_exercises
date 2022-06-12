@@ -1,17 +1,20 @@
-tokens = (
-    'LIST',
-    'LPAREN',
+tokens = ('LPAREN',
     'RPAREN',
-    'OPERANDS',
     'NUM',
 )
 
 # Tokens
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-t_NUM = r'\d+'
-t_OPERANDS = r'\d+\d*'
-t_LIST = r'\([\s*\d+\s*]\)'
+
+def t_NUM(t):
+    r'\d+'
+    try:
+        t.value = int(t.value)
+    except ValueError:
+        print("Integer value too large %d", t.value)
+        t.value = 0
+    return t
 
 t_ignore = " \t"
 
@@ -27,25 +30,60 @@ import ply.lex as lex
 lexer = lex.lex()
 
 #Definición de la gramática
+
+
+
 def p_start(t):
-    'start : LIST'
+    'start : list'
+    #print("start")
+    #for i in range(10):
+    #    try:
+    #        print(i, t[i])
+    #    except:
+    #        continue
 
 def p_list(t):
-    '''
-    list : LPAREN OPERANDS RPAREN
-         | NUM
-    '''
-    print(len(t[2]))
+    'list : LPAREN operands RPAREN'
+    #print("list")
+    #for i in range(10):
+    #    try:
+    #        print(i, t[i])
+    #    except:
+    #        continue
+    
+
+def p_list_num(t):
+    'list : NUM'
+    #print("list_num")
+    #for i in range(10):
+    #    try:
+    #        print(i, t[i])
+    #    except:
+    #        continue
 
 def p_operands(t):
-    '''
-    operands : OPERANDS LIST
-             | LIST
-    '''
+    'operands : operands list'
+    #print("operands")
+    #for i in range(10):
+    #    try:
+    #        print(i, t[i])
+    #    except:
+    #        continue
 
+def p_operands_list(t):
+    'operands : list'
+    #print("operands")
+    #for i in range(10):
+    #    try:
+    #        print(i, t[i])
+    #    except:
+    #        continue
 
 def p_error(t):
-    print("Error sintáctico en '%s'" % t.value)
+    try:
+        print("Error sintáctico en '%s'" % t.value)
+    except:
+        print("Error sintáctico incalculable")
 
 import ply.yacc as yacc
 parser = yacc.yacc()
