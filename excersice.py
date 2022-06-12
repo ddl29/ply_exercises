@@ -1,6 +1,5 @@
 tokens  = (
     'NUM',
-    'ID',
     'PLUS',
     'MINUS',
     'IF',
@@ -15,6 +14,7 @@ tokens  = (
     "BEGIN", 
     "END",
     "ASSIGN",
+    "ID",
 )
 
 # Tokens
@@ -66,7 +66,7 @@ lexer = lex.lex()
 
 # Definición de la gramática
 def p_stmt(t):
-    '''stmt : ID ASSIGN e
+    '''stmt : ID ASSIGN LPAREN e RPAREN
             | IF LPAREN e RPAREN stmt ELSE stmt FI
             | IF LPAREN e RPAREN stmt FI
             | WHILE LPAREN e RPAREN DO stmt OD
@@ -80,8 +80,6 @@ def p_stmts(t):
 def p_e(t):
     '''e : e PLUS t
          | e MINUS t
-         | MINUS t
-         | LPAREN e RPAREN
          | t'''
 
 def p_t(t):
