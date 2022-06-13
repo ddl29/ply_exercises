@@ -1,21 +1,24 @@
-tokens  = (
+reserved = {
+    'if' : 'IF',
+    'else' : 'ELSE',
+    'fi' : 'FI',
+    'while' : 'WHILE',
+    'do' : 'DO',
+    'od' : 'OD',
+    'begin' : 'BEGIN',
+    'end' : 'END',
+}
+
+tokens = [
     'NUM',
-    'ID',
     'PLUS',
     'MINUS',
-    'IF',
-    'ELSE',
-    'FI',
-    'WHILE',
-    'DO',
-    'OD',
     'LPAREN',
     'RPAREN', 
     "SEMI", 
-    "BEGIN", 
-    "END",
     "ASSIGN",
-)
+    "ID",
+ ] + list(reserved.values())
 
 # Tokens
 t_LPAREN = r'\('
@@ -32,17 +35,13 @@ t_DO = r'do'
 t_OD = r'od'
 t_BEGIN = r'begin'
 t_END = r'end'
-t_ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
+
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    t.type = reserved.get(t.value, 'ID') 
+    return t
 
 def t_NUM(t):
-    #if (t[0] == '('):
-    #    r'\(*\d+\)*'
-    #    try:
-    #        t.value = int(t[1:-1])
-    #    except ValueError:
-    #        print("Integer value too large %d", t.value)
-    #        t.value = 0
-    #    return t
     r'\d+'
     try:
         t.value = int(t.value)
@@ -80,26 +79,19 @@ def p_stmts(t):
 def p_e(t):
     '''e : e PLUS t
          | e MINUS t
-         | MINUS t
-         | LPAREN e RPAREN
          | t'''
 
 def p_t(t):
     '''t : ID
-         | NUM'''
+         | NUM
+         | MINUS ID
+         | MINUS NUM'''
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
 
 import ply.yacc as yacc
 parser = yacc.yacc()
-
-
-#f = open("./entrada.txt", "r")
-#input = f.read()
-
-#print(input)
-#parser.parse(input)
 
 while True:
     try:
