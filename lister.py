@@ -39,17 +39,18 @@ lexer = lex.lex()
 
 def p_start(t):
     'start : list'
-    print("start")
+    '''print("start")
     for i in range(10):
         try:
             print(i, t[i])
         except:
-            continue
+            continue'''
     
     #print("counts:", counts)
-    tmp = counts[-2]
-    counts[-2] = counts[-1]
-    counts[-1] = tmp
+    if len(counts) > 2:
+        tmp = counts[-2]
+        counts[-2] = counts[-1]
+        counts[-1] = tmp
     print("counts:", counts)
 
 
@@ -59,13 +60,13 @@ def p_start(t):
 def p_list(t):
     'list : LPAREN operands RPAREN'
     
-    print("list")
+    '''print("list")
     for i in range(10):
         try:
             print(i, t[i])
         except:
-            continue
-    print("")
+            continue'''
+    #print("")
     return t
 
 def p_list_num(t):
@@ -77,26 +78,26 @@ def p_list_num(t):
     #t[0] = 1
     if counts:
         counts[-1] += 1
-    print("list_num")
+    '''print("list_num")
     for i in range(10):
         try:
             print(i, t[i])
         except:
-            continue
-    print("")
+            continue'''
+    #print("")
     return t
 
 def p_operands(t):
     'operands : operands list'
     #if t[0] != None:
     #    t[0] += 1
-    print("operands")
+    '''print("operands")
     for i in range(10):
         try:
             print(i, t[i])
         except:
             continue
-    print("")
+    print("")'''
     return t
 
 def p_operands_list(t):
@@ -104,13 +105,13 @@ def p_operands_list(t):
     #t[0] = 1
     counts.append(1)
     
-    print("operands_list")
+    '''print("operands_list")
     for i in range(10):
         try:
             print(i, t[i])
         except:
             continue
-    print("")
+    print("")'''
     return t
 
 
