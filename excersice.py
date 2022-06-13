@@ -57,7 +57,7 @@ def t_newline(t):
     t.lexer.lineno += t.value.count("\n")
     
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print("Error lexico en '%s'" % t.value[0])
     t.lexer.skip(1)
     
 import ply.lex as lex
@@ -88,7 +88,10 @@ def p_t(t):
          | MINUS NUM'''
 
 def p_error(t):
-    print("Error sintáctico en '%s'" % t.value)
+    if(t == None):
+        print("Error sintáctico")
+    else:
+        print("Error sintáctico en '%s'" % t.value)
 
 import ply.yacc as yacc
 parser = yacc.yacc()
