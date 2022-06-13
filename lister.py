@@ -3,19 +3,22 @@ tokens = ('LPAREN',
     'NUM',
 )
 
+counts = []
+
 # Tokens
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-
-def t_NUM(t):
-    r'\d+'
-    try:
-        t.value = int(t.value)
-    except ValueError:
-        print("Integer value too large %d", t.value)
-        t.value = 0
-    return t
-
+##
+#def t_NUM(t):
+#    r'\d+'
+#    try:
+#        t.value = int(t.value)
+#    except ValueError:
+#        print("Integer value too large %d", t.value)
+#        t.value = 0
+#    return t
+##
+t_NUM = r'[0-9_][0-9_]*'
 t_ignore = " \t"
 
 def t_newline(t):
@@ -29,55 +32,79 @@ def t_error(t):
 import ply.lex as lex
 lexer = lex.lex()
 
+
+
 #Definición de la gramática
-
-
 
 def p_start(t):
     'start : list'
-    #print("start")
-    #for i in range(10):
-    #    try:
-    #        print(i, t[i])
-    #    except:
-    #        continue
+    print("start")
+    for i in range(10):
+        try:
+            print(i, t[i])
+        except:
+            continue
+    
+    print("counts:", counts)
+    counts.clear()
+    return t
 
 def p_list(t):
     'list : LPAREN operands RPAREN'
-    #print("list")
-    #for i in range(10):
-    #    try:
-    #        print(i, t[i])
-    #    except:
-    #        continue
-    
+    t[0] = 1
+    counts.append(t[0])
+    print("list")
+    for i in range(10):
+        try:
+            print(i, t[i])
+        except:
+            continue
+    print("")
+    return t
 
 def p_list_num(t):
     'list : NUM'
-    #print("list_num")
-    #for i in range(10):
-    #    try:
-    #        print(i, t[i])
-    #    except:
-    #        continue
+    '''if t[1] == '1':
+        print("Encontre un num")
+        counts[-1] += 1
+    '''
+    t[0] = 1
+
+    print("list_num")
+    for i in range(10):
+        try:
+            print(i, t[i])
+        except:
+            continue
+    print("")
+    return t
 
 def p_operands(t):
     'operands : operands list'
-    #print("operands")
-    #for i in range(10):
-    #    try:
-    #        print(i, t[i])
-    #    except:
-    #        continue
+    if t[0] != None:
+        t[0] += 1
+    print("operands")
+    for i in range(10):
+        try:
+            print(i, t[i])
+        except:
+            continue
+    print("")
+    return t
 
 def p_operands_list(t):
     'operands : list'
-    #print("operands")
-    #for i in range(10):
-    #    try:
-    #        print(i, t[i])
-    #    except:
-    #        continue
+    
+    print("operands_list")
+    for i in range(10):
+        try:
+            print(i, t[i])
+        except:
+            continue
+    print("")
+    return t
+
+
 
 def p_error(t):
     try:
@@ -102,4 +129,5 @@ while True:
         break
     if not s:
         continue
+        
     yacc.parse(s)
