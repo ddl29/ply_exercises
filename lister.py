@@ -29,6 +29,7 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
     
+from queue import Empty
 import ply.lex as lex
 lexer = lex.lex()
 
@@ -45,14 +46,19 @@ def p_start(t):
         except:
             continue
     
+    #print("counts:", counts)
+    tmp = counts[-2]
+    counts[-2] = counts[-1]
+    counts[-1] = tmp
     print("counts:", counts)
+
+
     counts.clear()
     return t
 
 def p_list(t):
     'list : LPAREN operands RPAREN'
-    t[0] = 1
-    counts.append(t[0])
+    
     print("list")
     for i in range(10):
         try:
@@ -68,8 +74,9 @@ def p_list_num(t):
         print("Encontre un num")
         counts[-1] += 1
     '''
-    t[0] = 1
-
+    #t[0] = 1
+    if counts:
+        counts[-1] += 1
     print("list_num")
     for i in range(10):
         try:
@@ -81,8 +88,8 @@ def p_list_num(t):
 
 def p_operands(t):
     'operands : operands list'
-    if t[0] != None:
-        t[0] += 1
+    #if t[0] != None:
+    #    t[0] += 1
     print("operands")
     for i in range(10):
         try:
@@ -94,6 +101,8 @@ def p_operands(t):
 
 def p_operands_list(t):
     'operands : list'
+    #t[0] = 1
+    counts.append(1)
     
     print("operands_list")
     for i in range(10):
